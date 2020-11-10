@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          4
+Release:          5
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -14,6 +14,7 @@ Patch0001:        varnish-5.1.1.fix_ld_library_path_in_doc_build.patch
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel
 Requires:         logrotate ncurses pcre jemalloc openEuler-rpm-config gcc
+Requires:	  %{name}-help = %{version}-%{release}
 Requires(pre):    shadow-utils
 Requires(post):   /usr/bin/uuidgen systemd-units systemd-sysv
 Requires(preun):  systemd-units
@@ -157,5 +158,8 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Mon Nov 9 2020 baizhonggui <baizhonggui@huawei.com> - 6.0.0-5
+- Add install requires help package into main package
+
 * Mon Feb 10 2020 wangye <wangye54@huawei.com> - 6.0.0-4
 - Init package
