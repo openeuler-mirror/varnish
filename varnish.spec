@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          5
+Release:          6
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -11,6 +11,14 @@ Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2
 
 Patch0001:        varnish-5.1.1.fix_ld_library_path_in_doc_build.patch
 Patch0002:        gcc-9-stricter-on-NULL-arguments-for-printf.patch
+Patch0003:        CVE-2019-15892-1.patch
+Patch0004:        CVE-2019-15892-2.patch
+Patch0005:        CVE-2019-15892-3.patch
+Patch0006:        CVE-2019-15892-4.patch
+Patch0007:        CVE-2019-15892-5.patch
+Patch0008:        CVE-2019-15892-6.patch
+Patch0009:        CVE-2019-15892-7.patch
+Patch0010:        CVE-2019-15892-8.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel
@@ -158,6 +166,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Jan 19 2021 wangyue <wangyue92@huawei.com> - 6.0.0-6
+- Fix CVE-2019-15892
+
 * Tue Jun 2 2020 chengzihan <chengzihan2@huawei.com> - 6.0.0-5
 - Fix the error of using parameter ("%s", NULL) for 'printf' when built by gcc-9
 
