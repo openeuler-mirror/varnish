@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          6
+Release:          8
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -166,6 +166,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Fri May 21 2021 lingsheng <lingsheng@huawei.com> - 6.0.0-8
+- Sync release number with sp1 branch
+
 * Tue Jan 19 2021 wangyue <wangyue92@huawei.com> - 6.0.0-6
 - Fix CVE-2019-15892
 
