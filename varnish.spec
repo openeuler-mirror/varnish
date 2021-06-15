@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          6
+Release:          7
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -21,7 +21,7 @@ Patch0009:        CVE-2019-15892-7.patch
 Patch0010:        CVE-2019-15892-8.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
-BuildRequires:    ncurses-devel pcre-devel libedit-devel
+BuildRequires:    ncurses-devel pcre-devel libedit-devel gcc
 Requires:         logrotate ncurses pcre jemalloc openEuler-rpm-config gcc
 Requires(pre):    shadow-utils
 Requires(post):   /usr/bin/uuidgen systemd-units systemd-sysv
@@ -166,6 +166,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Mon May 31 2021 huanghaitao <huanghaitao8@huawei.com> - 6.0.0-7
+- Completing build dependencies to fix gcc compiler missing error
+
 * Tue Jan 19 2021 wangyue <wangyue92@huawei.com> - 6.0.0-6
 - Fix CVE-2019-15892
 
