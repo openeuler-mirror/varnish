@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          8
+Release:          9
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -18,6 +18,10 @@ Patch0006:        CVE-2019-15892-5.patch
 Patch0007:        CVE-2019-15892-6.patch
 Patch0008:        CVE-2019-15892-7.patch
 Patch0009:        CVE-2019-15892-8.patch
+Patch0010:        CVE-2021-36740-1.patch
+Patch0011:        CVE-2021-36740-2.patch
+Patch0012:        CVE-2021-36740-3.patch
+Patch0013:        CVE-2021-36740-4.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel
@@ -166,6 +170,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Thu Sep 23 2021 yaoxin <yaoxin30@huawei.com> - 6.0.0-9
+- Fix CVE-2021-36740
+
 * Fri May 21 2021 lingsheng <lingsheng@huawei.com> - 6.0.0-8
 - Sync release number with sp1 branch
 
