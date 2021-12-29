@@ -1,7 +1,9 @@
+%global debug_package %{nil}
+
 Name:             varnish
 Summary:          A web application accelerator
-Version:          6.0.0
-Release:          8
+Version:          7.0.1
+Release:          1
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -9,24 +11,9 @@ Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 # https://github.com/varnishcache/pkg-varnish-cache
 Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2f22629c4a368959c423a19e352c9c6c79682/pkg-varnish-cache-0ad2f22.tar.gz
 
-Patch0001:        varnish-5.1.1.fix_ld_library_path_in_doc_build.patch
-Patch0002:        gcc-9-stricter-on-NULL-arguments-for-printf.patch
-Patch0003:        CVE-2019-15892-1.patch
-Patch0004:        CVE-2019-15892-2.patch
-Patch0005:        CVE-2019-15892-3.patch
-Patch0006:        CVE-2019-15892-4.patch
-Patch0007:        CVE-2019-15892-5.patch
-Patch0008:        CVE-2019-15892-6.patch
-Patch0009:        CVE-2019-15892-7.patch
-Patch0010:        CVE-2019-15892-8.patch
-Patch0011:        CVE-2021-36740-1.patch
-Patch0012:        CVE-2021-36740-2.patch
-Patch0013:        CVE-2021-36740-3.patch
-Patch0014:        CVE-2021-36740-4.patch
-
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
-BuildRequires:    ncurses-devel pcre-devel libedit-devel gcc
-Requires:         logrotate ncurses pcre jemalloc openEuler-rpm-config gcc
+BuildRequires:    ncurses-devel pcre2-devel libedit-devel gcc
+Requires:         logrotate ncurses pcre2 jemalloc openEuler-rpm-config gcc
 Requires(pre):    shadow-utils
 Requires(post):   /usr/bin/uuidgen systemd-units systemd-sysv
 Requires(preun):  systemd-units
@@ -76,9 +63,6 @@ export RST2MAN=/bin/true
   --localstatedir=/var/lib  \
   --docdir="%{_docdir}/varnish"
 
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g;
-        s|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
 mkdir lib/libvarnishapi/.libs
 pushd lib/libvarnishapi/.libs
 ln -s libvarnishapi.so libvarnishapi.so.1
@@ -112,8 +96,11 @@ install -D -m 0755 redhat/varnishreload       %{buildroot}%{_sbindir}/varnishrel
 
 echo %{_libdir}/varnish > %{buildroot}%{_sysconfdir}/ld.so.conf.d/varnish-%{_arch}.conf
 
+# No idea why these ends up with mode 600 in the debug package
+%if 0%{debug_package}
 chmod 644 lib/libvmod_*/*.c
 chmod 644 lib/libvmod_*/*.h
+%endif
 
 %check
 %ifarch aarch64
@@ -170,6 +157,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Wed Dec 29 2021 yaoxin <yaoxin30@huawei.com> - 7.0.1-1
+- Upgrade varnish to 7.0.1
+
 * Wed Sep 22 2021 yaoxin <yaoxin30@huawei.com> - 6.0.0-8
 - Fix CVE-2021-36740
 
