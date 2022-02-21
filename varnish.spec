@@ -3,7 +3,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          2
+Release:          3
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -11,6 +11,7 @@ Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 # https://github.com/varnishcache/pkg-varnish-cache
 Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2f22629c4a368959c423a19e352c9c6c79682/pkg-varnish-cache-0ad2f22.tar.gz
 Patch0001:        fix-varnish-devel-installation-failure.patch
+Patch0002:        fix-varnish.service-reload-failed.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre2-devel libedit-devel gcc
@@ -158,6 +159,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Fri Feb 18 2022 caodongxia <caodongxia@huawei.com> - 7.0.1-3
+- Fix varnish.service reload failed due to miss conf
+
 * Fri Jan 21 2021 wulei <wulei80@huawei.com> - 7.0.1-2
 - Fix varnish-devel installation failure
 
