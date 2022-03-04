@@ -1,9 +1,7 @@
-%global debug_package %{nil}
-
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          3
+Release:          4
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -140,7 +138,8 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %config(noreplace) %{_sysconfdir}/varnish/default.vcl
 %config(noreplace) %{_sysconfdir}/logrotate.d/varnish
 %config %{_sysconfdir}/ld.so.conf.d/varnish-%{_arch}.conf
-
+%exclude /usr/lib/debug/*
+%exclude /usr/src/debug/*
 %{_unitdir}/varnish.service
 %{_unitdir}/varnishncsa.service
 
@@ -159,6 +158,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Fri Mar 04 2022 houyingchao <houyingchao@huawei.com> - 7.0.1-4
+- Strip binary files
+
 * Fri Feb 18 2022 caodongxia <caodongxia@huawei.com> - 7.0.1-3
 - Fix varnish.service reload failed due to miss conf
 
