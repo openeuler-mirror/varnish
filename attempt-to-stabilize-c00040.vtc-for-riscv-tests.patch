@@ -1,0 +1,34 @@
+From 0867bb1a0790968a2d16c25067ea3debec71c072 Mon Sep 17 00:00:00 2001
+From: Nils Goroll <nils.goroll@uplex.de>
+Date: Mon, 27 Jan 2020 12:59:42 +0100
+Subject: [PATCH] attempt to stabilize c00040.vtc (for travis arm tests)
+
+We should not consider an early close of the backend connection a
+failure of the test, this vtc is not concerned with bodies.
+---
+ bin/varnishtest/tests/c00040.vtc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/bin/varnishtest/tests/c00040.vtc b/bin/varnishtest/tests/c00040.vtc
+index b0511c7a5..157caa173 100644
+--- a/bin/varnishtest/tests/c00040.vtc
++++ b/bin/varnishtest/tests/c00040.vtc
+@@ -35,6 +35,7 @@ server s1 {
+ 	send "1...5: ..0....5....0....5....0\r\n"
+ 	send "1...5: ..0....5....0....5....0\r\n"
+ 	send "1...5: ..0....5....0....5...\r\n\r\n"
++	non_fatal
+ 	send "asdf"
+ 
+ 	rxreq
+@@ -48,6 +49,7 @@ server s1 {
+ 	send "1...5: ..0....5....0....5....0\r\n"
+ 	send "1...5: ..0....5....0....5....0\r\n"
+ 	send "1...5: ..0....5....0....5....\r\n\r\n"
++	non_fatal
+ 	send "asdf"
+ } -start
+ 
+-- 
+2.35.1
+
