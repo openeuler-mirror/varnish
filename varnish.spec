@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.0.0
-Release:          8
+Release:          9
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -23,6 +23,10 @@ Patch0011:        CVE-2021-36740-1.patch
 Patch0012:        CVE-2021-36740-2.patch
 Patch0013:        CVE-2021-36740-3.patch
 Patch0014:        CVE-2021-36740-4.patch
+%ifarch riscv64
+Patch0015:	  fix-riscv-timeout.patch
+Patch0016:	  attempt-to-stabilize-c00040.vtc-for-riscv-tests.patch
+%endif
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel gcc
@@ -170,6 +174,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Mar 15 2022 YukariChiba <i@0x7f.cc> - 6.0.0-9
+- Fix test timeout in RISC-V
+
 * Wed Sep 22 2021 yaoxin <yaoxin30@huawei.com> - 6.0.0-8
 - Fix CVE-2021-36740
 

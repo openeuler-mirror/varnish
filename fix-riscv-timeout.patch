@@ -1,0 +1,12 @@
+diff --color -urN varnish-6.0.0/bin/varnishtest/vtc_main.c varnish-6.0.0-new/bin/varnishtest/vtc_main.c
+--- varnish-6.0.0/bin/varnishtest/vtc_main.c	2018-03-12 20:35:04.000000000 +0800
++++ varnish-6.0.0-new/bin/varnishtest/vtc_main.c	2022-03-15 12:48:02.964209086 +0800
+@@ -77,7 +77,7 @@
+ };
+ 
+ int iflg = 0;
+-unsigned vtc_maxdur = 60;
++unsigned vtc_maxdur = 600;
+ static unsigned vtc_bufsiz = 1024 * 1024;
+ 
+ static VTAILQ_HEAD(, vtc_tst) tst_head = VTAILQ_HEAD_INITIALIZER(tst_head);
