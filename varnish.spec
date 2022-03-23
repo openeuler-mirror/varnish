@@ -1,32 +1,13 @@
 Name:             varnish
 Summary:          A web application accelerator
-Version:          6.0.0
-Release:          9
+Version:          7.1.0
+Release:          1
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 
 # https://github.com/varnishcache/pkg-varnish-cache
-Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2f22629c4a368959c423a19e352c9c6c79682/pkg-varnish-cache-0ad2f22.tar.gz
-
-Patch0001:        varnish-5.1.1.fix_ld_library_path_in_doc_build.patch
-Patch0002:        gcc-9-stricter-on-NULL-arguments-for-printf.patch
-Patch0003:        CVE-2019-15892-1.patch
-Patch0004:        CVE-2019-15892-2.patch
-Patch0005:        CVE-2019-15892-3.patch
-Patch0006:        CVE-2019-15892-4.patch
-Patch0007:        CVE-2019-15892-5.patch
-Patch0008:        CVE-2019-15892-6.patch
-Patch0009:        CVE-2019-15892-7.patch
-Patch0010:        CVE-2019-15892-8.patch
-Patch0011:        CVE-2021-36740-1.patch
-Patch0012:        CVE-2021-36740-2.patch
-Patch0013:        CVE-2021-36740-3.patch
-Patch0014:        CVE-2021-36740-4.patch
-%ifarch riscv64
-Patch0015:	  fix-riscv-timeout.patch
-Patch0016:	  attempt-to-stabilize-c00040.vtc-for-riscv-tests.patch
-%endif
+Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/3ba24a8eee8cc5c082714034145b907402bbdb83/pkg-varnish-cache-3ba24a8.tar.gz
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel gcc
@@ -66,8 +47,8 @@ Help documentation files for varnish.
 
 %prep
 %autosetup -p1 -a 0 -a 1
-ln -s pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/redhat redhat
-ln -s pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/debian debian
+ln -s pkg-varnish-cache-3ba24a8eee8cc5c082714034145b907402bbdb83/redhat redhat
+ln -s pkg-varnish-cache-3ba24a8eee8cc5c082714034145b907402bbdb83/debian debian
 cp redhat/find-provides .
 
 %build
@@ -174,6 +155,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Thu Mar 17 2022 YukariChiba <i@0x7f.cc> - 7.1.0-1
+- Upgrade version to 7.1.0
+
 * Tue Mar 15 2022 YukariChiba <i@0x7f.cc> - 6.0.0-9
 - Fix test timeout in RISC-V
 
