@@ -1,0 +1,25 @@
+From eac670ac734d814b466cbbf5e9b68625735438e5 Mon Sep 17 00:00:00 2001
+From: caodongxia <315816521@qq.com>
+Date: Fri, 18 Feb 2022 16:21:18 +0800
+Subject: [PATCH] fix varnish.service reload failed
+
+---
+ .../systemd/varnish.service                                     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/systemd/varnish.service b/pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/systemd/varnish.service
+index c06c36b..6c65124 100644
+--- a/pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/systemd/varnish.service
++++ b/pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/systemd/varnish.service
+@@ -22,7 +22,7 @@ TasksMax=infinity
+ LimitCORE=infinity
+ 
+ ExecStart=/usr/sbin/varnishd -a :6081 -f /etc/varnish/default.vcl -s malloc,256m
+-ExecReload=/usr/sbin/varnishreload
++ExecReload=/usr/sbin/varnishreload /etc/varnish/default.vcl
+ 
+ [Install]
+ WantedBy=multi-user.target
+-- 
+2.27.0
+
