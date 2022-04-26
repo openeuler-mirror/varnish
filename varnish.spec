@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          4
+Release:          5
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -10,6 +10,8 @@ Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2f22629c4a368959c423a19e352c9c6c79682/pkg-varnish-cache-0ad2f22.tar.gz
 Patch0001:        fix-varnish-devel-installation-failure.patch
 Patch0002:        fix-varnish.service-reload-failed.patch
+#https://github.com/varnishcache/varnish-cache/commit/fceaefd4d59a3b5d5a4903a3f420e35eb430d0d4
+Patch0003:        CVE-2022-23959.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre2-devel libedit-devel gcc
@@ -158,6 +160,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Apr 26 2022 yaoxin <yaoxin30@h-partners.com> - 7.0.1-5
+- Fix CVE-2022-23959
+
 * Fri Mar 04 2022 houyingchao <houyingchao@huawei.com> - 7.0.1-4
 - Strip binary files
 
