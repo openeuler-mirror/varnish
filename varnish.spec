@@ -1,30 +1,16 @@
 Name:             varnish
 Summary:          A web application accelerator
-Version:          6.0.0
-Release:          9
+Version:          6.6.2
+Release:          1
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 
 # https://github.com/varnishcache/pkg-varnish-cache
-Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/0ad2f22629c4a368959c423a19e352c9c6c79682/pkg-varnish-cache-0ad2f22.tar.gz
-
-Patch0001:        varnish-5.1.1.fix_ld_library_path_in_doc_build.patch
-Patch0002:        CVE-2019-15892-1.patch
-Patch0003:        CVE-2019-15892-2.patch
-Patch0004:        CVE-2019-15892-3.patch
-Patch0005:        CVE-2019-15892-4.patch
-Patch0006:        CVE-2019-15892-5.patch
-Patch0007:        CVE-2019-15892-6.patch
-Patch0008:        CVE-2019-15892-7.patch
-Patch0009:        CVE-2019-15892-8.patch
-Patch0010:        CVE-2021-36740-1.patch
-Patch0011:        CVE-2021-36740-2.patch
-Patch0012:        CVE-2021-36740-3.patch
-Patch0013:        CVE-2021-36740-4.patch
+Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/ec7ad9e6c6dd7c9b4f4ba60c5b223376908c3ca6/pkg-varnish-cache-ec7ad9e.tar.gz
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
-BuildRequires:    ncurses-devel pcre-devel libedit-devel
+BuildRequires:    ncurses-devel pcre-devel libedit-devel python3
 Requires:         logrotate ncurses pcre jemalloc openEuler-rpm-config gcc
 Requires:	  %{name}-help = %{version}-%{release}
 Requires(pre):    shadow-utils
@@ -62,22 +48,18 @@ Help documentation files for varnish.
 
 %prep
 %autosetup -p1 -a 0 -a 1
-ln -s pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/redhat redhat
-ln -s pkg-varnish-cache-0ad2f22629c4a368959c423a19e352c9c6c79682/debian debian
+ln -s pkg-varnish-cache-ec7ad9e6c6dd7c9b4f4ba60c5b223376908c3ca6/redhat redhat
+ln -s pkg-varnish-cache-ec7ad9e6c6dd7c9b4f4ba60c5b223376908c3ca6/debian debian
 cp redhat/find-provides .
+sed -i 's,rst2man-3.6,rst2man-3.4,g; s,rst2html-3.6,rst2html-3.4,g; s,phinx-build-3.6,phinx-build-3.4,g' configure
 
 %build
 export RST2MAN=/bin/true
 
-%configure --disable-static \
-%ifarch aarch64
-  --with-jemalloc=no \
-%endif
+%configure LT_SYS_LIBRARY_PATH=%_libdir \
+  --disable-static \
   --localstatedir=/var/lib  \
   --docdir="%{_docdir}/varnish"
-
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g;
-        s|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 mkdir lib/libvarnishapi/.libs
 pushd lib/libvarnishapi/.libs
@@ -87,7 +69,6 @@ popd
 %make_build
 
 sed -i 's,User=varnishlog,User=varnish,g;' redhat/varnishncsa.service
-sed -i 's/env python/python3/g;' lib/libvcc/vmodtool.py
 
 rm -rf doc/html/_sources
 
@@ -112,14 +93,18 @@ install -D -m 0755 redhat/varnishreload       %{buildroot}%{_sbindir}/varnishrel
 
 echo %{_libdir}/varnish > %{buildroot}%{_sysconfdir}/ld.so.conf.d/varnish-%{_arch}.conf
 
+# No idea why these ends up with mode 600 in the debug package
+%if 0%{debug_package}
 chmod 644 lib/libvmod_*/*.c
 chmod 644 lib/libvmod_*/*.h
+%endif
 
 %check
-%ifarch aarch64
-sed -i 's/48/128/g;' bin/varnishtest/tests/c00057.vtc
+%ifarch s390 s390x aarch64
+rm bin/varnishtest/tests/o00005.vtc
 %endif
-make %{?_smp_mflags} check LD_LIBRARY_PATH="%{buildroot}%{_libdir}:%{buildroot}%{_libdir}/%{name}" VERBOSE=1
+
+%make_build check
 
 %pre
 getent group varnish >/dev/null || groupadd -r varnish
@@ -170,6 +155,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Apr 26 2022 yaoxin <yaoxin30@h-partners.com> - 6.6.2-1
+- Upgrade varnish to 6.6.2 for fix CVE-2022-23959
+
 * Thu Sep 23 2021 yaoxin <yaoxin30@huawei.com> - 6.0.0-9
 - Fix CVE-2021-36740
 
