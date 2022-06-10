@@ -1,8 +1,8 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          2
-License:          BSD
+Release:          3
+License:          BSD-2-Clause
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 
@@ -160,6 +160,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue May 10 2022 yaoxin <yaoxin30@h-partners.com> - 7.0.1-3
+- License compliance rectification
+
 * Wed Apr 27 2022 yaoxin <yaoxin30@h-partners.com> - 7.0.1-2
 - Fix CVE-2022-23959
 
