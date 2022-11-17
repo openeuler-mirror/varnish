@@ -1,9 +1,10 @@
 %global debug_package %{nil}
+%global vendor %{?_vendor:%{_vendor}}%{!?_vendor:openEuler}
 
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          4
+Release:          5
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -17,7 +18,7 @@ Patch0003:        CVE-2022-38150.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre2-devel libedit-devel gcc
-Requires:         logrotate ncurses pcre2 jemalloc openEuler-rpm-config gcc
+Requires:         logrotate ncurses pcre2 jemalloc %{vendor}-rpm-config gcc
 Requires(pre):    shadow-utils
 Requires(post):   /usr/bin/uuidgen systemd-units systemd-sysv
 Requires(preun):  systemd-units
@@ -161,6 +162,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Thu Nov 17 2022 liyanan <liyanan32@h-partners.com> - 7.0.1-5
+- Replace openEuler with vendor
+
 * Tue Aug 23 2022 jiangpeng <jiangpeng01@ncti-gba.cn> - 7.0.1-4
 - Fix CVE-2022-38150
 
