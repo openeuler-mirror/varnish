@@ -1,7 +1,7 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          4
+Release:          5
 License:          BSD-2-Clause
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -13,6 +13,7 @@ Patch0002:        fix-varnish.service-reload-failed.patch
 ##https://github.com/varnishcache/varnish-cache/commit/fceaefd4d59a3b5d5a4903a3f420e35eb430d0d4
 Patch0003:        CVE-2022-23959.patch
 Patch0004:        CVE-2022-38150.patch
+Patch0005:        CVE-2022-45060.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre2-devel libedit-devel gcc
@@ -161,6 +162,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Nov 22 2022 jiangpeng <jiangpeng01@ncti-gba.cn> - 7.0.1-5
+- Fix CVE-2022-45060
+
 * Tue Aug 23 2022 jiangpeng <jiangpeng01@ncti-gba.cn> - 7.0.1-4
 - Fix CVE-2022-38150
 
