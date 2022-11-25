@@ -1,0 +1,25 @@
+From 727e97677a45ab13d0adf43ba627f6b972e02a9e Mon Sep 17 00:00:00 2001
+From: caodongxia <315816521@qq.com>
+Date: Fri, 25 Nov 2022 19:16:48 +0800
+Subject: [PATCH] modify invalid option ? for the varnished command
+
+---
+ bin/varnishd/mgt/mgt_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bin/varnishd/mgt/mgt_main.c b/bin/varnishd/mgt/mgt_main.c
+index 9f4c236..9ad6d8a 100644
+--- a/bin/varnishd/mgt/mgt_main.c
++++ b/bin/varnishd/mgt/mgt_main.c
+@@ -79,7 +79,7 @@ static struct vpf_fh *pfh2 = NULL;
+ static struct vfil_path *vcl_path = NULL;
+ static VTAILQ_HEAD(,f_arg) f_args = VTAILQ_HEAD_INITIALIZER(f_args);
+ 
+-static const char opt_spec[] = "a:b:Cdf:Fh:i:I:j:l:M:n:P:p:r:S:s:T:t:VW:x:";
++static const char opt_spec[] = "?a:b:Cdf:Fh:i:I:j:l:M:n:P:p:r:S:s:T:t:VW:x:";
+ 
+ int optreset;	// Some has it, some doesn't.  Cheaper than auto*
+ 
+-- 
+2.23.0
+
