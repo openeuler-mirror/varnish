@@ -1,13 +1,14 @@
 Name:             varnish
 Summary:          A web application accelerator
 Version:          6.6.2
-Release:          1
+Release:          2
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
 
 # https://github.com/varnishcache/pkg-varnish-cache
 Source1:          https://github.com/varnishcache/pkg-varnish-cache/archive/ec7ad9e6c6dd7c9b4f4ba60c5b223376908c3ca6/pkg-varnish-cache-ec7ad9e.tar.gz
+Patch0000:        modify-invalid-option-for-varnished-command.patch
 
 BuildRequires:    python3-sphinx python3-docutils pkgconfig make graphviz nghttp2 systemd-units
 BuildRequires:    ncurses-devel pcre-devel libedit-devel python3
@@ -155,6 +156,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Fri Nov 25 2022 caodongxia <caodongxia@h-partners.com> - 6.6.2-2
+- Modify invalid option for the varnished command
+
 * Tue Apr 26 2022 yaoxin <yaoxin30@h-partners.com> - 6.6.2-1
 - Upgrade varnish to 6.6.2 for fix CVE-2022-23959
 
