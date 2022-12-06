@@ -1,10 +1,9 @@
-%global debug_package %{nil}
 %global vendor %{?_vendor:%{_vendor}}%{!?_vendor:openEuler}
 
 Name:             varnish
 Summary:          A web application accelerator
 Version:          7.0.1
-Release:          7
+Release:          8
 License:          BSD
 URL:              https://www.varnish-cache.org/
 Source0:          http://varnish-cache.org/_downloads/varnish-%{version}.tgz
@@ -103,16 +102,7 @@ install -D -m 0755 redhat/varnishreload       %{buildroot}%{_sbindir}/varnishrel
 
 echo %{_libdir}/varnish > %{buildroot}%{_sysconfdir}/ld.so.conf.d/varnish-%{_arch}.conf
 
-# No idea why these ends up with mode 600 in the debug package
-%if 0%{debug_package}
-chmod 644 lib/libvmod_*/*.c
-chmod 644 lib/libvmod_*/*.h
-%endif
-
 %check
-%ifarch aarch64
-sed -i 's/48/128/g;' bin/varnishtest/tests/c00057.vtc
-%endif
 make %{?_smp_mflags} check LD_LIBRARY_PATH="%{buildroot}%{_libdir}:%{buildroot}%{_libdir}/%{name}" VERBOSE=1
 
 %pre
@@ -164,6 +154,9 @@ test -f /etc/varnish/secret || (uuidgen > /etc/varnish/secret && chmod 0600 /etc
 %{_mandir}/man7/*.7*
 
 %changelog
+* Tue Dec 06 2022 wangkai <wangkai385@h-partners.com> - 7.0.1-8
+- Fix strip safe compile options
+
 * Tue Nov 29 2022 caodongxia <caodongxia@huawei.com> - 7.0.1-7
 - Fix varnish.service reload failed due to miss conf
 
